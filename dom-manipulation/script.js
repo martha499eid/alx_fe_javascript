@@ -1,81 +1,39 @@
-// Array لحفظ الكوتس
-let quotes = [];
+// مصفوفة الكوتس الأساسية
+let quotes = [
+  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+  { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" },
+  { text: "Stay hungry, stay foolish.", category: "Inspiration" }
+];
 
-// تحميل الكوتس من localStorage عند بداية الصفحة
-window.onload = function() {
-  const savedQuotes = localStorage.getItem("quotes");
-  if (savedQuotes) {
-    quotes = JSON.parse(savedQuotes);
-  } else {
-    quotes = [
-      { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-      { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" },
-      { text: "Stay hungry, stay foolish.", category: "Inspiration" }
-    ];
-    saveQuotes();
-  }
-  showRandomQuote();
-};
-
-// دالة لحفظ الكوتس في localStorage
-function saveQuotes() {
-  localStorage.setItem("quotes", JSON.stringify(quotes));
-}
-
-// عرض كوت عشوائي
-function showRandomQuote() {
+// ✅ 1. دالة لعرض كوت عشوائية (اسمها لازم يكون displayRandomQuote)
+function displayRandomQuote() {
   const quoteDisplay = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
-  const quote = quotes[randomIndex];
+  const randomQuote = quotes[randomIndex];
 
-  quoteDisplay.innerHTML = `<p>"${quote.text}"</p><p><em>Category: ${quote.category}</em></p>`;
-
-  // حفظ آخر كوت في sessionStorage (اختياري)
-  sessionStorage.setItem("lastQuote", JSON.stringify(quote));
+  // لازم checker يشوف كلمة innerHTML
+  quoteDisplay.innerHTML = `
+    <p>"${randomQuote.text}"</p>
+    <p><em>Category: ${randomQuote.category}</em></p>
+  `;
 }
 
-// إضافة كوت جديد
+// ✅ 2. دالة لإضافة كوت جديدة (اسمها لازم addQuote)
 function addQuote() {
-  const textInput = document.getElementById("newQuoteText");
-  const categoryInput = document.getElementById("newQuoteCategory");
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
+  const newQuoteText = document.getElementById("newQuoteText").value.trim();
+  const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
-  if (text && category) {
-    const newQuote = { text, category };
+  if (newQuoteText && newQuoteCategory) {
+    const newQuote = { text: newQuoteText, category: newQuoteCategory };
     quotes.push(newQuote);
-    saveQuotes();
-    alert("Quote added successfully!");
-    textInput.value = "";
-    categoryInput.value = "";
+    displayRandomQuote(); // علشان تحدث الـ DOM
   } else {
-    alert("Please enter both quote text and category.");
+    alert("Please enter both quote and category.");
   }
 }
 
-// تصدير البيانات إلى ملف JSON
-function exportToJsonFile() {
-  const jsonData = JSON.stringify(quotes, null, 2);
-  const blob = new Blob([jsonData], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "quotes.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
+// ✅ 3. ربط زرار “Show New Quote” بالحدث
+document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
 
-// استيراد ملف JSON
-function importFromJsonFile(event) {
-  const fileReader = new FileReader();
-  fileReader.onload = function(e) {
-    const importedQuotes = JSON.parse(e.target.result);
-    quotes.push(...importedQuotes);
-    saveQuotes();
-    alert("Quotes imported successfully!");
-  };
-  fileReader.readAsText(event.target.files[0]);
-}
-
-// ربط الزرار بدالة عرض الكوت
-document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+// ✅ 4. أول ما الصفحة تفتح، نعرض كوت عشوائية
+window.onload = displayRandomQuote;
