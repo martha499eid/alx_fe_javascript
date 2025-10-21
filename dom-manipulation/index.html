@@ -1,21 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Quote Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Quote Generator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1>Dynamic Quote Generator</h1>
 
-  <h1>Random Quote Generator</h1>
-  <p id="quote"></p>
-  <button id="new-quote">Show New Quote</button>
+  <div id="quoteDisplay"></div>
+  <button id="newQuote">Show New Quote</button>
+
+  <div class="add-section">
+    <h2>Add a New Quote</h2>
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote">
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
+    <button onclick="addQuote()">Add Quote</button>
+  </div>
+
+  <div class="filter-section">
+    <h2>Filter by Category</h2>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+    </select>
+  </div>
 
   <hr>
 
-  <h2>Add a New Quote</h2>
-  <input type="text" id="new-quote-text" placeholder="Enter your quote here">
-  <input type="text" id="new-quote-author" placeholder="Enter author name">
-  <button id="add-quote">Add Quote</button>
+  <div class="sync-section">
+    <h2>Data Sync</h2>
+    <button id="syncData">Sync with Server</button>
+    <button id="simulateConflict">Simulate Conflict</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
