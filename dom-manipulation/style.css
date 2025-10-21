@@ -1,0 +1,60 @@
+/* 🔹 تنسيق عام للصفحة */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  text-align: center;
+  padding: 40px;
+  color: #333;
+}
+
+/* 🔹 عنوان الصفحة */
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* 🔹 الفقرة اللي بتعرض الاقتباس */
+#quote {
+  font-size: 1.3em;
+  font-style: italic;
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  width: 60%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 🔹 الأزرار */
+button {
+  background-color: #4a90e2;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #357ABD;
+}
+
+/* 🔹 حقول الإدخال */
+input {
+  padding: 10px;
+  margin: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+  font-size: 1em;
+}
+
+/* 🔹 العنوان الفرعي */
+h2 {
+  margin-top: 40px;
+  font-size: 1.4em;
+  color: #222;
+}

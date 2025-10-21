@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynamic Quote Generator</title>
-  </head>
-  <body>
-    <h1>Dynamic Quote Generator</h1>
+<html>
+<head>
+  <title>Quote Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <!-- مكان عرض الكوت -->
-    <div id="quoteDisplay"></div>
+  <h1>Random Quote Generator</h1>
+  <p id="quote"></p>
+  <button id="new-quote">Show New Quote</button>
 
-    <!-- زرار عرض كوت جديدة -->
-    <button id="newQuote">Show New Quote</button>
+  <hr>
 
-    <!-- إدخال كوت جديدة -->
-    <div>
-      <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-      <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-      <button onclick="addQuote()">Add Quote</button>
-    </div>
+  <h2>Add a New Quote</h2>
+  <input type="text" id="new-quote-text" placeholder="Enter your quote here">
+  <input type="text" id="new-quote-author" placeholder="Enter author name">
+  <button id="add-quote">Add Quote</button>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>
