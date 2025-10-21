@@ -1,13 +1,43 @@
-// مصفوفة مبدئية من الاقتباسات
-let quotes = [
-  { text: "The best way to predict the future is to create it.", category: "Motivation" },
-  { text: "Success is not in what you have, but who you are.", category: "Inspiration" },
-  { text: "Life is 10% what happens to us and 90% how we react to it.", category: "Life" },
-  { text: "Do what you can, with what you have, where you are.", category: "Action" },
-  { text: "The harder you work for something, the greater you’ll feel when you achieve it.", category: "Motivation" }
-];
+// مصفوفة محلية للاقتباسات
+let quotes = [];
 
-// دالة لعرض جميع الاقتباسات على الصفحة
+// رابط الـ Mock API
+const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// جلب البيانات من السيرفر
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+
+    quotes = data.slice(0, 5).map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+    displayQuotes();
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+  }
+}
+
+// إرسال اقتباس جديد للسيرفر
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(quote)
+    });
+    const data = await response.json();
+    console.log("Quote posted:", data);
+  } catch (error) {
+    console.error("Error posting quote:", error);
+  }
+}
+
+// عرض كل الاقتباسات
 function displayQuotes(filteredQuotes = quotes) {
   const quoteList = document.getElementById("quoteList");
   quoteList.innerHTML = "";
@@ -19,7 +49,7 @@ function displayQuotes(filteredQuotes = quotes) {
   });
 }
 
-// دالة لعرض اقتباس عشوائي
+// عرض اقتباس عشوائي
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
@@ -27,32 +57,32 @@ function displayRandomQuote() {
   quoteDisplay.innerHTML = `"${randomQuote.text}" - [${randomQuote.category}]`;
 }
 
-// دالة لإضافة اقتباس جديد
+// إضافة اقتباس جديد
 function addQuote() {
   const newQuoteText = document.getElementById("newQuote").value.trim();
   const newCategory = document.getElementById("newCategory").value.trim();
 
   if (newQuoteText !== "" && newCategory !== "") {
-    quotes.push({ text: newQuoteText, category: newCategory });
+    const newQuote = { text: newQuoteText, category: newCategory };
+    quotes.push(newQuote);
     document.getElementById("newQuote").value = "";
     document.getElementById("newCategory").value = "";
 
-    // تحديث القائمة بعد الإضافة
     displayQuotes();
-
-    // إعادة تعبئة الفئات
+    localStorage.setItem("quotes", JSON.stringify(quotes));
     populateCategories();
+
+    postQuoteToServer(newQuote);
   }
 }
 
-// دالة لاستخراج الفئات وإضافتها للقائمة المنسدلة
+// تعبئة القوائم بالفئات
 function populateCategories() {
-  const categories = quotes.map(quote => quote.category);
+  const categories = quotes.map(q => q.category);
   const uniqueCategories = [...new Set(categories)];
   const categoryFilter = document.getElementById("categoryFilter");
 
   categoryFilter.innerHTML = '<option value="all">All</option>';
-
   uniqueCategories.forEach(category => {
     const option = document.createElement("option");
     option.value = category;
@@ -61,30 +91,55 @@ function populateCategories() {
   });
 }
 
-// دالة لتصفية الاقتباسات حسب الفئة المختارة
+// تصفية حسب الفئة
 function filterQuote() {
   const categoryFilter = document.getElementById("categoryFilter");
   const selectedCategory = categoryFilter.value;
-
-  // حفظ الفئة المختارة في localStorage
   localStorage.setItem("selectedCategory", selectedCategory);
 
   const filteredQuotes = selectedCategory === "all"
     ? quotes
-    : quotes.filter(quote => quote.category === selectedCategory);
+    : quotes.filter(q => q.category === selectedCategory);
 
   displayQuotes(filteredQuotes);
 }
 
+// مزامنة البيانات بين السيرفر والمحلي
+async function syncQuotes() {
+  try {
+    const response = await fetch(API_URL);
+    const serverData = await response.json();
+
+    const serverQuotes = serverData.slice(0, 5).map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+
+    const combinedQuotes = [...quotes, ...serverQuotes].reduce((acc, curr) => {
+      if (!acc.find(q => q.text === curr.text)) acc.push(curr);
+      return acc;
+    }, []);
+
+    quotes = combinedQuotes;
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+    displayQuotes();
+    console.log("Quotes synced successfully");
+  } catch (error) {
+    console.error("Error syncing quotes:", error);
+  }
+}
+
 // عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", () => {
-  // عرض كل الاقتباسات عند التشغيل
-  displayQuotes();
+  const savedQuotes = localStorage.getItem("quotes");
+  if (savedQuotes) {
+    quotes = JSON.parse(savedQuotes);
+    displayQuotes();
+    populateCategories();
+  } else {
+    fetchQuotesFromServer();
+  }
 
-  // تعبئة الفئات
-  populateCategories();
-
-  // استرجاع آخر فئة محفوظة
   const savedCategory = localStorage.getItem("selectedCategory");
   const categoryFilter = document.getElementById("categoryFilter");
 
@@ -93,12 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
     filterQuote();
   }
 
-  // تطبيق التصفية عند التغيير
+  document.getElementById("showRandomBtn").addEventListener("click", displayRandomQuote);
+  document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
   categoryFilter.addEventListener("change", filterQuote);
 
-  // زر عرض اقتباس عشوائي
-document.getElementById("showRandomBtn").addEventListener("click", displayRandomQuote);
-
-  // زر إضافة اقتباس جديد
-  document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
+  setInterval(syncQuotes, 60000);
 });

@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quote Generator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Manager</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Quote Generator</h1>
+  <h1>✨ Quote Manager ✨</h1>
 
-  <div id="quoteDisplay"></div>
+  <div id="quoteSection">
+    <button id="showRandomBtn">Show New Quote</button>
+    <p id="randomQuote">Click the button to show a random quote!</p>
+  </div>
 
-  <button id="newQuoteBtn">Show New Quote</button>
+  <h2>All Quotes</h2>
+  <ul id="quoteList"></ul>
 
   <h2>Add a New Quote</h2>
-  <input type="text" id="quoteInput" placeholder="Enter a new quote">
+  <input type="text" id="newQuote" placeholder="Enter quote text" />
+  <input type="text" id="newCategory" placeholder="Enter category" />
   <button id="addQuoteBtn">Add Quote</button>
+
+  <h2>Filter by Category</h2>
+  <select id="categoryFilter">
+    <option value="all">All</option>
+  </select>
 
   <script src="script.js"></script>
 </body>
