@@ -1,66 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      text-align: center;
-      padding: 30px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Quote Generator</title>
+  </head>
+  <body>
+    <h1>Dynamic Quote Generator</h1>
 
-    h1 {
-      color: #333;
-    }
+    <!-- عرض الكوت -->
+    <div id="quoteDisplay"></div>
+    <button id="newQuote">Show New Quote</button>
 
-    #quoteDisplay {
-      font-size: 1.2em;
-      color: #555;
-      margin: 20px 0;
-      padding: 15px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+    <!-- إضافة كوت جديد -->
+    <div>
+      <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+      <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+      <button onclick="addQuote()">Add Quote</button>
+    </div>
 
-    input, button {
-      padding: 8px;
-      margin: 5px;
-      border-radius: 5px;
-    }
+    <!-- تصدير واستيراد JSON -->
+    <div>
+      <button onclick="exportToJsonFile()">Export Quotes (JSON)</button>
+      <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    </div>
 
-    button {
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>🌟 Dynamic Quote Generator 🌟</h1>
-
-  <!-- مكان عرض الاقتباس -->
-  <div id="quoteDisplay">Click the button to show a random quote</div>
-
-  <!-- زر عرض اقتباس جديد -->
-  <button id="newQuote">Show New Quote</button>
-
-  <!-- إدخال اقتباس جديد -->
-  <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote">
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
-    <button onclick="addQuote()">Add Quote</button>
-  </div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
